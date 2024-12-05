@@ -1,15 +1,19 @@
-const winston = require("winston");
+const fs = require("fs");
+const path = require("path");
 
-const logger = winston.createLogger({
-    level: "info",
-    format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-    ),
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({ filename: "app.log" }),
-    ],
-});
+const logFilePath = path.join(__dirname, "../logs/app.log");
 
-module.exports = logger;
+const logToFile = (message) => {
+    fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${message}\n`);
+};
+
+module.exports = {
+    info: (message) => {
+        console.log(message);
+        logToFile(`INFO: ${message}`);
+    },
+    error: (message) => {
+        console.error(message);
+        logToFile(`ERROR: ${message}`);
+    },
+};
