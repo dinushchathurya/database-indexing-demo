@@ -1,19 +1,10 @@
 const express = require('express');
-const mysql = require('mysql2');
 
 const app = express();
 const port = 3000;
 
 // MySQL connection pool
-const pool = mysql.createPool({
-    host: 'localhost',    // Change this to your MySQL server IP
-    user: 'root',         // MySQL user
-    password: '', // MySQL password
-    database: 'cluster_index_demo',     // Database name
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+const pool = require("./config/db");
 
 // Fetch user by name (force no indexing, using full table scan)
 app.get('/user-no-index/:name', (req, res) => {
